@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Form Validation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+    }
+
+    input, select, textarea {
+      width: 300px;
+      padding: 8px;
+      margin-top: 5px;
+    }
+
+    .error {
+      border: 2px solid red;
+      background-color: #ffe6e6;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 13px;
+    }
+
+    .submit-btn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: orange;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h2>Project Request Form</h2>
+
+  <form id="projectForm" onsubmit="return validateForm()">
+    <div class="form-group">
+      <label>First Name</label>
+      <input type="text" id="firstName">
+      <div class="error-message" id="firstNameError"></div>
+    </div>
+
+    <div class="form-group">
+      <label>Last Name</label>
+      <input type="text" id="lastName">
+      <div class="error-message" id="lastNameError"></div>
+    </div>
+
+    <div class="form-group">
+      <label>E-Mail</label>
+      <input type="text" id="email">
+      <div class="error-message" id="emailError"></div>
+    </div>
+
+    <div class="form-group">
+      <label>Phone #</label>
+      <input type="text" id="phone">
+      <div class="error-message" id="phoneError"></div>
+    </div>
+
+    <div class="form-group">
+      <label>Address</label>
+      <input type="text" id="address">
+      <div class="error-message" id="addressError"></div>
+    </div>
+
+    <div class="form-group">
+      <label>City</label>
+      <input type="text" id="city">
+      <div class="error-message" id="cityError"></div>
+    </div>
+
+    <div class="form-group">
+      <label>State</label>
+      <select id="state">
+        <option value="">Please select your state</option>
+        <option value="NY">New York</option>
+        <option value="CA">California</option>
+        <option value="TX">Texas</option>
+        <!-- Add more states as needed -->
+      </select>
+      <div class="error-message" id="stateError"></div>
+    </div>
+
+    <div class="form-group">
+      <label>Do you have hosting?</label>
+      <input type="radio" name="hosting" value="yes"> Yes
+      <input type="radio" name="hosting" value="no"> No
+      <div class="error-message" id="hostingError"></div>
+    </div>
+
+    <div class="form-group">
+      <label>Project Description</label>
+      <textarea id="description"></textarea>
+    </div>
+
+    <button class="submit-btn" type="submit">Send</button>
+  </form>
+
+  <script>
+    function validateForm() {
+      let isValid = true;
+
+      const fields = [
+        { id: "firstName", message: "Please supply your first name" },
+        { id: "lastName", message: "Please supply your last name" },
+        { id: "email", message: "Please supply your email address" },
+        { id: "phone", message: "Please supply your phone number" },
+        { id: "address", message: "Please supply your street address" },
+        { id: "city", message: "Please supply your city" },
+        { id: "state", message: "Please select your state" }
+      ];
+
+      // Clear all previous errors
+      fields.forEach(field => {
+        const input = document.getElementById(field.id);
+        input.classList.remove("error");
+        document.getElementById(field.id + "Error").innerText = "";
+      });
+
+      // Check each field
+      fields.forEach(field => {
+        const input = document.getElementById(field.id);
+        if (!input.value.trim()) {
+          input.classList.add("error");
+          document.getElementById(field.id + "Error").innerText = field.message;
+          isValid = false;
+        }
+      });
+
+      // Hosting radio button check
+      const hostingYes = document.querySelector('input[name="hosting"][value="yes"]');
+      const hostingNo = document.querySelector('input[name="hosting"][value="no"]');
+      if (!hostingYes.checked && !hostingNo.checked) {
+        document.getElementById("hostingError").innerText = "Please select hosting option";
+        isValid = false;
+      } else {
+        document.getElementById("hostingError").innerText = "";
+      }
+
+      return isValid;
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Password Generator</title>
+  <style>
+    body {
+      background: #2e2b2b;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #0f0f0f;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      color: white;
+      width: 500px;
+    }
+
+    h2 {
+      background: #eee;
+      color: black;
+      padding: 10px;
+      border-radius: 50px;
+    }
+
+    input[type="text"] {
+      width: 60%;
+      padding: 10px;
+      font-size: 18px;
+      border-radius: 20px;
+      margin: 20px 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .options {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .options input[type="checkbox"] {
+      margin-left: 5px;
+    }
+
+    input[type="range"] {
+      width: 150px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Password - Generator</h2>
+    <div>
+      <input type="text" id="password" readonly>
+      <button onclick="copyPassword()">Copy</button>
+    </div>
+
+    <div class="options">
+      <input type="range" min="5" max="25" value="15" id="lengthRange" oninput="updateLength()">
+      <span>Length <span id="lengthValue">15</span></span>
+      <label><input type="checkbox" id="useChars" checked> Characters</label>
+      <label><input type="checkbox" id="useNums" checked> Numbers</label>
+    </div>
+  </div>
+
+  <script>
+    const passwordField = document.getElementById('password');
+    const lengthRange = document.getElementById('lengthRange');
+    const lengthValue = document.getElementById('lengthValue');
+    const useChars = document.getElementById('useChars');
+    const useNums = document.getElementById('useNums');
+
+    function generatePassword() {
+      const length = parseInt(lengthRange.value);
+      let characters = '';
+      if (useChars.checked) {
+        characters += 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+[]{}|;:<>,.?/~`';
+      }
+      if (useNums.checked) {
+        characters += '0123456789';
+      }
+
+      if (characters.length === 0) {
+        passwordField.value = 'Please select options';
+        return;
+      }
+
+      let password = '';
+      for (let i = 0; i < length; i++) {
+        password += characters.charAt(Math.floor(Math.random() * characters.length));
+      }
+
+      passwordField.value = password;
+    }
+
+    function updateLength() {
+      lengthValue.textContent = lengthRange.value;
+      generatePassword();
+    }
+
+    function copyPassword() {
+      passwordField.select();
+      document.execCommand("copy");
+      alert("Password copied!");
+    }
+
+    // Generate initial password
+    generatePassword();
+
+    // Regenerate on changes
+    lengthRange.addEventListener('input', generatePassword);
+    useChars.addEventListener('change', generatePassword);
+    useNums.addEventListener('change', generatePassword);
+  </script>
+</body>
+</html>
